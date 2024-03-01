@@ -1,4 +1,4 @@
-0#### Full-stack web app (online video platform), similar to YouTube, made using `MERN` stack, `JWT` user verification, and `cookie` authentication. The user can:
+#### Full-stack web app (online video platform), similar to YouTube, made using `MERN` stack, `JWT` user verification, and `cookie` authentication. The user can:
 ```
 > Sign up/in (Google accounts included)
 > Upload videos
