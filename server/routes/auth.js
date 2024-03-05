@@ -3,10 +3,13 @@ import { signin, signup } from "../controllers/auth.js";
 
 const router = express.Router();
 
-// Create a new user
+// Create a new user end-point
 router.post("/signup", signup)
 
-// Sign in
+// Sign in end-point
 router.post("/signin", signin)
+
+// Google end-point
+ router.post('/google', )
 
 export default router;
