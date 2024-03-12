@@ -1,6 +1,7 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import Thumbnail from '../img/channel.png'
+import axios from 'axios';
 
 const Container = styled.div`
     display: flex;
@@ -37,14 +38,25 @@ const Text = styled.span`
     font-size: 14px;
 `;
 
-const Comment = () => {
+const Comment = ({comment}) => {
+  const [channel, setChannel] = useState({});
+
+  useEffect(() => {
+    const fetchComment = async () => {
+        const res = await axios.get(
+            `/users/find/${comment.userId}`
+        );
+        setChannel(res.data)};
+        fetchComment();
+    }, [comment.userId]);
+
   return (
     <Container>
-        <ProfilePic src={Thumbnail} alt="User profile picture" />
+        <ProfilePic src={channel.img} alt="User profile picture" />
         <Details>
-            <UserName>J.F</UserName>
+            <UserName>{channel.name}</UserName>
             <Date>2 days ago</Date>
-            <Text>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec in dui eget...</Text>
+            <Text>{comment.desc}</Text>
         </Details>
     </Container>
   )
