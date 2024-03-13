@@ -3,7 +3,7 @@ import styled from "styled-components";
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import VideoCallOutlinedIcon from "@mui/icons-material/VideoCallOutlined";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { logout } from "../redux/userSlice";
 import Upload from "./Upload";
@@ -25,8 +25,8 @@ const Wrapper = styled.div`
 `;
 
 const Search = styled.div`
+  width: 40%;
   position: absolute;
-  width: 50%;
   left: 0px;
   right: 0px;
   margin: auto;
@@ -36,6 +36,7 @@ const Search = styled.div`
   padding: 5px;
   border: 1px solid #ccc;
   border-radius: 3px;
+  color: ${({ theme }) => theme.text};
 `;
 
 const Input = styled.input`
@@ -43,6 +44,7 @@ const Input = styled.input`
   background-color: transparent;
   outline: none;
   color: ${({ theme }) => theme.text};
+
 `;
 
 const Button = styled.button`
@@ -73,10 +75,13 @@ const Avatar = styled.img`
   background-color: #999;
 `;
 
+
 const Navbar = () => {
-  const [open, setOpen] = useState(false);
-  const { currentUser } = useSelector((state) => state.user);
+  const navigate = useNavigate();
   const dispatch = useDispatch();
+  const [open, setOpen] = useState(false);
+  const [q, setQ] = useState("");
+  const { currentUser } = useSelector((state) => state.user);
 
   const handleSignOut = () => {
     dispatch(logout());
@@ -89,12 +94,15 @@ const Navbar = () => {
           <Search>
             <Input
               placeholder="Search"
+              onChange={(e) => setQ(e.target.value)}
             />
-            <SearchOutlinedIcon />
+            <SearchOutlinedIcon 
+              onClick={() => navigate(`/search?q=${q}`)}
+            />
           </Search>
           {currentUser ? (
             <User>
-              <VideoCallOutlinedIcon onClick={()=> setOpen(true)} />
+              <VideoCallOutlinedIcon onClick={() => setOpen(true)} />
               <Avatar src={currentUser.img} />
               {currentUser.name}
               <Button onClick={handleSignOut}>SIGN OUT</Button>
@@ -109,7 +117,7 @@ const Navbar = () => {
           )}
         </Wrapper>
       </Container>
-    {open && <Upload setOpen={setOpen} />}
+      {open && <Upload setOpen={setOpen} />}
     </>
   );
 };

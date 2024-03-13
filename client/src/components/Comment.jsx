@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react'
-import styled from 'styled-components'
-import Thumbnail from '../img/channel.png'
+import React, { useEffect, useState } from 'react';
+import styled from 'styled-components';
 import axios from 'axios';
+import moment from 'moment';
 
 const Container = styled.div`
     display: flex;
@@ -39,27 +39,35 @@ const Text = styled.span`
 `;
 
 const Comment = ({comment}) => {
-  const [channel, setChannel] = useState({});
+    const [channel, setChannel] = useState({});
+    const [formattedDate, setFormattedDate] = useState('');
 
-  useEffect(() => {
-    const fetchComment = async () => {
-        const res = await axios.get(
-            `/users/find/${comment.userId}`
-        );
-        setChannel(res.data)};
+    useEffect(() => {
+        const fetchComment = async () => {
+            const res = await axios.get(`/users/find/${comment.userId}`);
+            setChannel(res.data);
+        };
         fetchComment();
     }, [comment.userId]);
 
-  return (
-    <Container>
-        <ProfilePic src={channel.img} alt="User profile picture" />
-        <Details>
-            <UserName>{channel.name}</UserName>
-            <Date>2 days ago</Date>
-            <Text>{comment.desc}</Text>
-        </Details>
-    </Container>
-  )
-}
+    useEffect(() => {
+        const formatDate = () => {
+            const commentDate = moment(comment.createdAt).format('LLL');
+            setFormattedDate(commentDate);
+        };
+        formatDate();
+    }, [comment.createdAt]);
 
-export default Comment
+    return (
+        <Container>
+            <ProfilePic src={channel.img} alt="User profile picture" />
+            <Details>
+                <UserName>{channel.name}</UserName>
+                <Date>{formattedDate}</Date>
+                <Text>{comment.desc}</Text>
+            </Details>
+        </Container>
+    );
+};
+
+export default Comment;
