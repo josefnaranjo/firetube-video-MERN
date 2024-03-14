@@ -27,7 +27,7 @@ const Input = styled.input`
     padding: 5px;
 `;
 
-const Comments = ({videoId}) => {
+const Comments = ({ videoId }) => {
     const { currentUser } = useSelector((state) => state.user);
     const [comments, setComments] = useState([]);
     const [newCommentText, setNewCommentText] = useState('');
@@ -35,15 +35,15 @@ const Comments = ({videoId}) => {
 
     useEffect(() => {
         const fetchComments = async () => {
-          try {
-            const res = await axios.get(`/comments/${videoId}`);
-            setComments(res.data);
-          } catch (err) {}
+            try {
+                const res = await axios.get(`/comments/${videoId}`);
+                setComments(res.data);
+            } catch (err) {}
         };
         fetchComments();
-      }, [videoId]);
+    }, [videoId]);
 
-      const handleAddComment = async () => {
+    const handleAddComment = async () => {
         try {
             const currentDate = new Date(); // Get the current date and time
             // Call API to add comment
@@ -60,28 +60,27 @@ const Comments = ({videoId}) => {
             console.error('Error adding comment:', err);
         }
     };
-    
 
-  return (
-    <Container>
-        <NewComment>
-            <ProfilePic src={currentUser.img} alt="profile pic" />
-            <Input 
-                placeholder='Add a comment...'
-                value={newCommentText}
-                onChange={(e) => setNewCommentText(e.target.value)}
-                onKeyDown={(e) => {
-                    if (e.key === 'Enter') {
-                        handleAddComment();
-                    }
-                }}
-            />
-        </NewComment>
-        {comments.map(comment => (
-            <Comment key={comment._id} comment={comment} />
-        ))}
-    </Container>
-  )
+    return (
+        <Container>
+            <NewComment>
+                {currentUser && currentUser.img && <ProfilePic src={currentUser.img} alt="profile pic" />}
+                <Input
+                    placeholder='Add a comment...'
+                    value={newCommentText}
+                    onChange={(e) => setNewCommentText(e.target.value)}
+                    onKeyDown={(e) => {
+                        if (e.key === 'Enter') {
+                            handleAddComment();
+                        }
+                    }}
+                />
+            </NewComment>
+            {comments.map(comment => (
+                <Comment key={comment._id} comment={comment} />
+            ))}
+        </Container>
+    )
 }
 
 export default Comments;
