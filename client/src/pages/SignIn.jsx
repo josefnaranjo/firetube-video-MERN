@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import { loginFailure, loginStart, loginSuccess } from '../redux/userSlice';
 import { auth, provider } from '../firebase';
 import { signInWithPopup } from 'firebase/auth';
+import { useNavigate }  from 'react-router-dom';
 import Signup from './SignUp';
 
 const Container = styled.div`
@@ -70,7 +71,7 @@ const Link = styled.span`
 `;
 
 const SignIn = () => {
-
+  const navigate = useNavigate();
   const [name, setName ] = useState("");
   const [email, setEmail ] = useState("");
   const [password, setPassword ] = useState("");
@@ -82,6 +83,7 @@ const SignIn = () => {
     try {
       const res = await axios.post("/auth/signin", {name, password})
       dispatch(loginSuccess(res.data))
+      navigate("/");
     } catch (error) {
       dispatch(loginFailure())
     }
@@ -97,6 +99,7 @@ const SignIn = () => {
         img: result.user.photoURL,
       }).then((res) => {
         dispatch(loginSuccess(res.data));
+        navigate("/");
       });
     })
     .catch((error) => {
