@@ -40,7 +40,6 @@ export const userSlice = createSlice({
 })
 
 // The value we returned from reduceReducers is the combined reducer function that Redux will call when an action is dispatched.
-  
 export  const {loginStart, loginSuccess, loginFailure, logout, subscription}= userSlice.actions
 
 export default userSlice.reducer

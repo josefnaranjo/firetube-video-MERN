@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import { loginFailure, loginStart, loginSuccess } from '../redux/userSlice';
 import { auth, provider } from '../firebase';
 import { signInWithPopup } from 'firebase/auth';
+import Signup from './SignUp';
 
 const Container = styled.div`
   display: flex;
@@ -114,10 +115,8 @@ const SignIn = () => {
         <Title>or</Title>
         <Button onClick={signInWithGoogle}>Sign in with Google</Button>
         <Title>or</Title>
-        <Input placeholder='Username' onChange={(user) => setName(user.target.value)} />
-        <Input placeholder='Email' onChange={(email) => setEmail(email.target.value)} />
-        <Input type="password" placeholder='Password' onChange={(pass) => setPassword(pass.target.value)} />
-        <Button>Sign  up</Button>
+        <Title>Sign Up</Title>
+        <Signup />
       </Wrapper>
       <Info>
         English (US)

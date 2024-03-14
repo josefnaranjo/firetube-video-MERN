@@ -6,9 +6,10 @@ import ReplyOutlinedIcon from "@mui/icons-material/ReplyOutlined";
 import AddTaskOutlinedIcon from "@mui/icons-material/AddTaskOutlined";
 import ThumbDownIcon from "@mui/icons-material/ThumbDown";
 import ThumbUpIcon from "@mui/icons-material/ThumbUp";
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import Comments from "../components/Comments";
 import { useDispatch, useSelector } from "react-redux";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { dislike, fetchSuccess, like } from "../redux/videoSlice";
 import { format } from "timeago.js";
@@ -119,6 +120,7 @@ const Video = () => {
   const { currentUser } = useSelector((state) => state.user);
   const { currentVideo } = useSelector((state) => state.video);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const path = useLocation().pathname.split("/")[2];
 
@@ -137,6 +139,16 @@ const Video = () => {
     };
     fetchData();
   }, [path, dispatch]);
+
+  // Function to handle video deletion
+  // const handleDelete = async () => {
+  //   try {
+  //     await axios.delete(`/videos/${currentVideo._id}`);
+  //     navigate("/");
+  //   } catch (error) {
+  //     console.error("Error deleting video:", error);
+  //   }
+  // };
 
   const handleLike = async () => {
     await axios.put(`/users/like/${currentVideo._id}`);
@@ -190,6 +202,12 @@ const Video = () => {
             <Button>
               <AddTaskOutlinedIcon /> Save
             </Button>
+            {/* Delete button */}
+            {/*{currentUser?._id === currentVideo.userId && ( // Show delete button only for the owner of the video
+              <Button onClick={handleDelete}> <DeleteForeverIcon />
+                Delete
+              </Button>
+            )}*/}
           </Buttons>
         </Details>
         <Hr />
